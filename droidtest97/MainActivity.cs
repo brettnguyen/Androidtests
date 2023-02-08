@@ -14,7 +14,8 @@ using AndroidX.Activity.Result.Contract;
 using Com.Gowtham.Library.Utils;
 using Java.Lang;
 using Android.Util;
-
+using Android.Media;
+using Android.Widget;
 
 namespace droidtest97
 {
@@ -23,6 +24,8 @@ namespace droidtest97
     {
         private ActivityResultLauncher activityResultLauncher;
         private ActivityResultLauncher activityResultLauncher2;
+        private MediaController med;
+        Android.Media.MediaPlayer.IOnPreparedListener listener;
         private static string TAG = "MainActivity";
    
         protected override void OnCreate(Bundle savedInstanceState)
@@ -40,9 +43,9 @@ namespace droidtest97
             ActivityResultCallback activityResultCallback2 = new ActivityResultCallback();
             activityResultCallback2.OnActivityResultCalled += ActivityResultCallback_ActivityResultCalled2;
 
-            activityResultLauncher2 = RegisterForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResultCallback);
+            activityResultLauncher2 = RegisterForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResultCallback2);
 
-            Toolbar toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+            AndroidX.AppCompat.Widget.Toolbar toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
             FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
@@ -102,6 +105,13 @@ namespace droidtest97
 
                 Android.Net.Uri uri = Android.Net.Uri.Parse(TrimVideo.GetTrimmedVideoPath(result.Data));
                 Log.Debug(TAG, "Video size:: " + uri);
+                VideoView testv = FindViewById<VideoView>(Resource.Id.testvv);
+              //  med = new MediaController(this);
+               // testv.SetMediaController(med);
+                testv.SetVideoURI(uri);
+                testv.RequestFocus();
+                testv.Start();
+                
             }
 
         }
